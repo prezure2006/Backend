@@ -1,0 +1,107 @@
+1. Why requests are split into different parts
+
+Server needs three different things from every request:
+
+URL + Method → where to go and what action
+Headers → instructions and metadata
+Body → actual data being sent
+
+Mixing them all together would force servers, proxies, and firewalls to parse through your actual data just to figure out basic things like who you are. Keeping them separate means each layer of the network only reads what it needs.
+
+2. Headers and their uses
+
+Headers are extra instructions sent with every request. Server reads them before touching the body.
+
+Authorization: Bearer token → proves who you are, protects routes
+Content-Type: application/json → tells server how to parse the body
+Accept: application/json → tells server what format you want back
+Origin: http://localhost:3000 → where the request is coming from, used in CORS
+Cookie: sessionId=abc → keeps user logged in across requests
+Cache-Control: no-cache → controls whether response gets stored
+Custom X- headers → your own app logic like tracking, versioning, feature flags
+
+Developers can create custom headers — prefix with X- by convention. Must be listed in CORS allowedHeaders in Express or browser will block them.
+
+3. Idempotent vs Non-Idempotent
+
+Idempotent means calling the same request 10 times = same result as calling it once.
+
+Method	Idempotent	Why
+GET	Yes	Only reads, never writes
+PUT	Yes	Replaces fully, same result every time
+DELETE	Yes	Already gone after first call
+POST	No	Creates new resource each time
+PATCH	Depends	Safe if setting value, unsafe if incrementing
+
+Matters most when retrying failed requests — POST retries can create duplicate records, GET retries are always safe.
+
+4. OPTIONS method
+
+Asks the server "what are you capable of?" — never changes data.
+
+Two uses:
+
+CORS preflight check — browser sends this automatically before risky requests
+Checking which methods a route supports
+
+You never write OPTIONS manually. Browser handles it. Fix CORS in Express with:
+
+javascript
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
+5. Simple vs Preflight Requests
+
+Simple — goes directly to server, no pre-check.
+Conditions: method is GET/POST/HEAD only + no JSON content-type + no custom headers.
+
+Preflight — browser sends OPTIONS first to ask permission, then sends actual request.
+Triggered when: method is PUT/DELETE/PATCH, or Content-Type is JSON, or Authorization header is present.
+
+In MERN projects almost every request will be preflight because you'll always use JSON and Authorization headers.
+
+6. HTTP Status Codes
+
+2xx — Success
+
+Code	Name	Meaning
+200	OK	Request succeeded, data returned
+201	Created	New resource created (after POST)
+204	No Content	Success but nothing to return (after DELETE)
+
+3xx — Redirection
+
+Code	Name	Meaning
+301	Moved Permanently	Resource moved to new URL forever
+302	Found	Resource temporarily at different URL
+304	Not Modified	Cached version is still valid, use that
+
+4xx — Client Errors (you did something wrong)
+
+Code	Name	Meaning
+400	Bad Request	Malformed request, missing fields, bad JSON
+401	Unauthorized	Not logged in, no token sent
+403	Forbidden	Logged in but don't have permission
+404	Not Found	Resource doesn't exist
+409	Conflict	Resource already exists (duplicate email etc.)
+422	Unprocessable Entity	Data format is right but values are invalid
+429	Too Many Requests	Rate limit hit, slow down
+
+5xx — Server Errors (server did something wrong)
+
+Code	Name	Meaning
+500	Internal Server Error	Something crashed on the server
+502	Bad Gateway	Server got bad response from another server
+503	Service Unavailable	Server is down or overloaded
+504	Gateway Timeout	Upstream server took too long to respond
+
+Key things to remember for MERN:
+
+Always return 201 after POST creates something, not 200
+401 means no token, 403 means token is valid but role is wrong — don't mix these up
+404 on an OPTIONS request = CORS is broken, not your actual route
+500 always means check your Express server logs
+In React, check response.status or error.response.status (axios) to handle each case differently

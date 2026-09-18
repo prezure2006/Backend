@@ -1,0 +1,226 @@
+// It is a Database 
+It is a NOSQL Database-> it works on documents not realation or anything
+// It has Strong support for aggregation pipeline
+//It works on BSON format 
+//Best for node application 
+_____________________________________________________--
+Arcitecture of mongodb
+It has collection like collection of posts collection of blogs collection of users it has documents 
+Doc1 Doc2 etc 
+
+1. What is MongoDB?
+
+MongoDB = NoSQL database that stores data as documents instead of traditional rows/tables.
+
+SQL                    MongoDB
+────────────────────────────────
+Database                Database
+Table                   Collection
+Row                     Document
+Column                  Field
+
+Example document:
+
+{
+  name: "Piyush",
+  age: 21,
+  skills: ["C++", "Python", "ML"]
+}
+2. MongoDB Atlas
+
+MongoDB Atlas = cloud-hosted MongoDB.
+
+Your Node.js app
+       ↓
+    Internet
+       ↓
+ MongoDB Atlas
+       ↓
+    Database
+
+You don't need to run MongoDB locally when using Atlas.
+
+3. MongoDB CLI tools
+
+You currently have:
+
+atlas
+
+Atlas CLI → manage Atlas from terminal.
+
+Another tool is:
+
+mongosh
+
+MongoDB Shell → interact with a MongoDB database from terminal.
+
+4. Cluster / Deployment
+
+A cluster/deployment is where your MongoDB databases actually run in Atlas.
+
+Atlas Project
+     ↓
+  Cluster
+     ↓
+  Database
+     ↓
+ Collection
+     ↓
+ Documents
+
+You currently have 0 clusters, so you'll create one when you're ready.
+
+5. Database
+
+A database contains collections.
+
+Example:
+
+school
+ ├── students
+ ├── teachers
+ └── courses
+6. Collection
+
+A collection is roughly equivalent to a SQL table.
+
+Example:
+
+students
+
+contains student documents.
+
+7. Document
+
+A document is an individual record.
+
+{
+  name: "Piyush",
+  age: 21,
+  course: "CSE"
+}
+
+MongoDB internally stores documents as BSON.
+
+8. _id
+
+Every MongoDB document normally gets a unique _id.
+
+{
+  _id: ObjectId("..."),
+  name: "Piyush",
+  age: 21
+}
+
+MongoDB automatically generates it if you don't provide one.
+
+9. CRUD
+
+The four fundamental database operations:
+
+C → Create
+R → Read
+U → Update
+D → Delete
+
+Examples:
+
+// Create
+db.students.insertOne({ name: "Piyush", age: 21 })
+
+// Read
+db.students.find()
+
+// Update
+db.students.updateOne(
+  { name: "Piyush" },
+  { $set: { age: 22 } }
+)
+
+// Delete
+db.students.deleteOne({ name: "Piyush" })
+10. Mongoose
+
+Mongoose is an npm package/library, not a database.
+
+It helps your Node/Express application communicate with MongoDB and provides things like:
+
+Schemas
+Models
+Validation
+Queries
+
+Architecture:
+
+Node.js
+   ↓
+Express
+   ↓
+Mongoose
+   ↓
+MongoDB Atlas
+
+Install:
+
+npm install mongoose
+
+Import:
+
+const mongoose = require("mongoose");
+11. Schema
+
+A Mongoose Schema defines the structure/rules for your documents.
+
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  email: String
+});
+12. Model
+
+A Model is created from a Schema and is used to interact with a collection.
+
+const Student = mongoose.model("Student", studentSchema);
+
+Then:
+
+const student = await Student.find();
+13. Connection
+
+Mongoose connects your application to MongoDB:
+
+mongoose.connect(MONGO_URI);
+
+Where MONGO_URI is your Atlas connection string.
+
+Usually keep it in .env:
+
+MONGO_URI=your_connection_string
+The whole picture
+                    MongoDB Atlas
+                         │
+                     Database
+                         │
+                    Collection
+                         │
+                     Documents
+                         ▲
+                         │
+                     Mongoose
+                         ▲
+                         │
+                      Express
+                         ▲
+                         │
+                       Node
+                         ▲
+                         │
+                   Your Backend
+Remember these 6 things
+
+MongoDB → database
+Atlas → cloud MongoDB
+Collection → group of documents
+Document → individual record
+Mongoose → Node.js MongoDB library
+Nodemon → automatically restarts your server

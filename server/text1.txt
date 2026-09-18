@@ -1,0 +1,46 @@
+
+Schema = rules/structure
+
+A Schema tells Mongoose what a document should look like.
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  email: String
+});
+
+It basically says:
+
+A user should have a name, age, and email, with these expected data types.
+
+Model = tool to work with that data
+
+You create a Model from the Schema:
+
+const User = mongoose.model("User", userSchema);
+
+Now User gives your code methods to interact with the MongoDB collection:
+
+const users = await User.find();
+
+await User.create({
+  name: "Piyush",
+  age: 21,
+  email: "piyush@example.com"
+});
+Easy analogy
+Schema = Blueprint 📋
+Model  = Machine built from that blueprint ⚙️
+Database = Where the finished things are stored 🗄️
+
+So:
+
+Schema
+  ↓
+Model
+  ↓
+MongoDB Collection
+  ↓
+Documents
+
+Schema defines → Model operates.
