@@ -1,0 +1,24 @@
+crypto module is a nodejs module whcih is used is hashing passwords it is a builtin library
+
+
+Hashing is a one-way transformation of data into a fixed-length string of characters.
+
+Hash functions have several important properties:
+
+Deterministic: Same input always produces the same output
+Fixed Length: Output is always the same size regardless of input size
+One-Way: Extremely difficult to reverse the process
+Avalanche Effect: Small changes in input produce significant changes in output
+
+
+createHash() creates a hash object with the specified algorithm
+update() updates the hash content with the given data//Here the given data is the actual password//
+digest() calculates the digest and outputs it in the specified format
+
+
+
+Warning: MD5 and SHA-1 are considered cryptographically weak and should not be used for security-critical applications.
+
+Use SHA-256, SHA-384, or SHA-512 instead.
+
+Never store passwords in plain text or with simple hashes like MD5 or SHA-1.
