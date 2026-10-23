@@ -1,0 +1,19 @@
+Socket.io is bidirectional, low-latency and event communication between a client and server
+And also to create a both side connection we just cant normally use the req res things bcz these are single time things
+Client->server server->client
+
+
+The connection can be established in 3 ways 
+   HTTP long polling
+   WebSocket
+   WebTransport
+
+
+We have to do both side implementation on clientand server both side 
+for ex the frontend and backend both code should have connection or codes related to socket.io
+
+Socket.IO is NOT a WebSocket implementation.
+Socket.IO is not meant to be used in a background service for mobile applications.(like real time messaging app whatsapp)
+
+Benefits 
+HTTP Long back falling:- if some client is not able to create a conenction on web socket it will fallback to HTTP long-polling 
