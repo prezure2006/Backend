@@ -1,10 +1,33 @@
-notes of restfull
-server                   client
-!-> Server and Client Arcitecture
+Notes Of RESTful Api
+
+** Server and Client Arcitecture**
 
 
-A RESTful API (Representational State Transfer) is an architectural style that allows two different
+->A RESTful API (Representational State Transfer) is an architectural style that allows two different
 computer systems to securely exchange information over the internet using standard web protocols
+
+->This information, or representation, is delivered in one of several formats via HTTP: JSON (Javascript Object Notation), HTML, XLT, Python, PHP, or plain text. JSON is the most generally popular file format to use because, despite its name, it’s language-agnostic, as well as readable by both humans and machines.
+
+
+
+
+-> Headers and parameters are also important in the HTTP methods of a RESTful API HTTP request, as they contain important identifier information as to the request's metadata, authorization, uniform resource identifier (URI), caching, cookies, and more.
+
+->There are request headers and response headers, each with their own HTTP connection information and status codes.
+Rules of RESTful
+
+->Cacheable data that streamlines client-server interactions.
+->A client-server architecture made up of clients, servers, and resources, with requests managed through HTTP.
+
+->Stateless client-server communication, meaning no client information is stored between get requests and each request is separate and unconnected.
+
+->Code-on-demand (optional): the ability to send executable code from the server to the client when requested, extending client functionality. 
+
+
+
+->A layered system that organizes each type of server (those responsible for security, load-balancing, etc.) involved the retrieval of requested information into hierarchies, invisible to the client.
+
+
 
 
 1= Client-server architecture is a computing model that splits tasks between service requesters 
@@ -74,3 +97,5 @@ Client                            Server
 One line summary
 
 REST = right method + right URL + right status code + JSON response
+
+T
